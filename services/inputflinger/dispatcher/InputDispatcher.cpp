@@ -5540,6 +5540,10 @@ void InputDispatcher::notifyFocusChangedLocked(const sp<IBinder>& oldToken,
     commandEntry->oldToken = oldToken;
     commandEntry->newToken = newToken;
     postCommandLocked(std::move(commandEntry));
+    if (newToken) {
+        //Reset NoFocusWindowAnr at new window focused
+        resetNoFocusedWindowTimeoutLocked();
+    }
 }
 
 void InputDispatcher::notifyDropWindowLocked(const sp<IBinder>& token, float x, float y) {

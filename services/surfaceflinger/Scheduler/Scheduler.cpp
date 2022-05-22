@@ -584,6 +584,9 @@ void Scheduler::registerLayer(Layer* layer) {
 
     if (!mOptions.useContentDetection || layer->getWindowType() == WindowInfo::Type::STATUS_BAR) {
         voteType = scheduler::LayerHistory::LayerVoteType::NoVote;
+    } else if (layer->getWindowType() == WindowInfo::Type::NOTIFICATION_SHADE) {
+        // Enforce max refresh rate for notification pulldown
+        voteType = scheduler::LayerHistory::LayerVoteType::Max;
     } else if (layer->getWindowType() == WindowInfo::Type::WALLPAPER) {
         // Running Wallpaper at Min is considered as part of content detection.
         voteType = scheduler::LayerHistory::LayerVoteType::Min;

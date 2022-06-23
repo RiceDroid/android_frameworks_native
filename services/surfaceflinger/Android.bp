@@ -19,7 +19,7 @@ cc_defaults {
         "-Wunreachable-code",
         "-Wconversion",
         "-O3",
-        "-g0"
+        "-g0",
     ],
 }
 

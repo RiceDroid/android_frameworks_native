@@ -35,7 +35,7 @@
 /**
  * Allows to set RenderEngine backend to GLES (default) or SkiaGL (NOT yet supported).
  */
-#define PROPERTY_DEBUG_RENDERENGINE_BACKEND "debug.renderengine.backend"
+#define PROPERTY_DEBUG_RENDERENGINE_BACKEND "persist.sys.renderengine.backend"
 
 /**
  * Turns on recording of skia commands in SkiaGL version of the RE. This property

@@ -259,7 +259,7 @@ protected:
 
     bool deviceUsesSkiaRenderEngine() {
         char value[PROPERTY_VALUE_MAX];
-        property_get("debug.renderengine.backend", value, "default");
+        property_get("persist.sys.renderengine.backend", value, "default");
         return strstr(value, "skia") != nullptr;
     }
 

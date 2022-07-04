@@ -102,7 +102,7 @@ sk_sp<SkImage> BlurFilter::generate(GrRecordingContext* context, const uint32_t 
     SkSamplingOptions linear(SkFilterMode::kLinear, SkMipmapMode::kNone);
     SkRuntimeShaderBuilder blurBuilder(mBlurEffect);
     blurBuilder.child("input") =
-            input->makeShader(SkTileMode::kClamp, SkTileMode::kClamp, linear, blurMatrix);
+            input->makeShader(SkTileMode::kMirror, SkTileMode::kMirror, linear, blurMatrix);
     blurBuilder.uniform("in_blurOffset") = SkV2{stepX * kInputScale, stepY * kInputScale};
     blurBuilder.uniform("in_maxSizeXY") =
             SkV2{blurRect.width() * kInputScale, blurRect.height() * kInputScale};
@@ -113,7 +113,7 @@ sk_sp<SkImage> BlurFilter::generate(GrRecordingContext* context, const uint32_t 
     for (auto i = 1; i < numberOfPasses; i++) {
         const float stepScale = (float)i * kInputScale;
         blurBuilder.child("input") =
-                tmpBlur->makeShader(SkTileMode::kClamp, SkTileMode::kClamp, linear);
+                tmpBlur->makeShader(SkTileMode::kMirror, SkTileMode::kMirror, linear);
         blurBuilder.uniform("in_blurOffset") = SkV2{stepX * stepScale, stepY * stepScale};
         blurBuilder.uniform("in_maxSizeXY") =
                 SkV2{blurRect.width() * kInputScale, blurRect.height() * kInputScale};
@@ -150,7 +150,7 @@ void BlurFilter::drawBlurRegion(SkCanvas* canvas, const SkRRect& effectRegion,
 
     const auto blurMatrix = getShaderTransform(canvas, blurRect, kInverseInputScale);
     SkSamplingOptions linearSampling(SkFilterMode::kLinear, SkMipmapMode::kNone);
-    const auto blurShader = blurredImage->makeShader(SkTileMode::kClamp, SkTileMode::kClamp,
+    const auto blurShader = blurredImage->makeShader(SkTileMode::kMirror, SkTileMode::kMirror,
                                                      linearSampling, &blurMatrix);
 
     if (blurRadius < kMaxCrossFadeRadius) {
@@ -164,7 +164,7 @@ void BlurFilter::drawBlurRegion(SkCanvas* canvas, const SkRRect& effectRegion,
         SkRuntimeShaderBuilder blurBuilder(mMixEffect);
         blurBuilder.child("blurredInput") = blurShader;
         blurBuilder.child("originalInput") =
-                input->makeShader(SkTileMode::kClamp, SkTileMode::kClamp, linearSampling,
+                input->makeShader(SkTileMode::kMirror, SkTileMode::kMirror, linearSampling,
                                   inputMatrix);
         blurBuilder.uniform("mixFactor") = blurRadius / kMaxCrossFadeRadius;
 
